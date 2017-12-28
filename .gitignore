@@ -9,5 +9,5 @@
 /deps
 /.rebar
 env
-/idea
+/.idea/
 *.iml
