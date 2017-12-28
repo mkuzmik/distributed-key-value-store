@@ -5,4 +5,4 @@
               {applications,[kernel,stdlib]},
               {mod,{store_app,[]}},
               {env,[]},
-              {modules,[store_app,store_sup]}]}.
+              {modules,[store_app,store_node,store_sup]}]}.

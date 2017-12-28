@@ -23,5 +23,9 @@ start_link() ->
 %% ===================================================================
 
 init([]) ->
-    {ok, { {one_for_one, 5, 10}, []} }.
+    {ok, { {one_for_one, 5, 10}, [
+        {server,
+            {store_node, start_link, []},
+            permanent, 50000, worker, [store_server]}
+    ]} }.
 
