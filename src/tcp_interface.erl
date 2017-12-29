@@ -18,11 +18,12 @@ start_server(Port) ->
     spawn(fun() -> acceptor(Listen) end),
     timer:sleep(infinity)
                    end),
-  io:format("TCP interface started on port ~w~n", [Port]),
+  logger:info(io_lib:format("tcp_interface: Started on port: ~w", [Port])),
   {ok, Pid}.
 
 acceptor(ListenSocket) ->
   {ok, Socket} = gen_tcp:accept(ListenSocket),
+  logger:info("tcp_interface: Got connection"),
   spawn(fun() -> acceptor(ListenSocket) end),
   handle(Socket).
 

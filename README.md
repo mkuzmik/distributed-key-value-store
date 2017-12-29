@@ -21,11 +21,8 @@ Execute `erl -pa ebin -sname <your_node_name>` in each terminal. `<your_node_nam
 #### 4. Connect nodes with each other.
 In one shell execute `net_kernel:connect_node(<another_node_name>)` for each node. You can check connected node by `nodes()` command.
 
-#### 5. Set ports for application tcp interface
-Set application environment variable app_port for each node (all port must differ): `application:set_env(store, app_port, <port>)`
-
 #### 6. Start application
-On all nodes execute: `application:start(store).`
+On all nodes execute: `store_app:start(<port>)`. Each node must run on unique port.
 
 ## Using app
 

@@ -15,7 +15,7 @@
 -export([start_link/0, init/1, handle_call/3, put/2, get/1, handle_cast/2]).
 
 start_link() ->
-  io:format("Node  ~s starting ~n", [node()]),
+  logger:info("gen_server: Starting"),
   gen_server:start_link({global, node()}, ?MODULE, [], []).
 
 put(Key, Value) ->
@@ -30,8 +30,11 @@ init([]) ->
   {ok, #{}}.
 
 handle_call({put, Key, Value}, _From, State) ->
+  logger:info(io_lib:format("gen_server: Putting key: ~w value: ~w", [Key, Value])),
   {reply, ok, maps:put(Key, Value, State)};
+
 handle_call({get, Key}, _From, State) ->
+  logger:info(io_lib:format("gen_server: Getting key: ~w", [Key])),
   {reply, get_if_exists(Key, State), State}.
 
 get_if_exists(Key, Map) ->

@@ -23,13 +23,16 @@ start_link() ->
 %% ===================================================================
 
 init([]) ->
-    {ok, AppPort} = application:get_env(app_port),
     {ok, { {one_for_one, 5, 10}, [
         {node,
             {store_node, start_link, []},
             permanent, 50000, worker, [store_node]},
         {tcp,
-            {tcp_interface, start_server, [AppPort]},
+            {tcp_interface, start_server, [get_app_port()]},
             permanent, 50000, worker, [tcp_interface]}
     ]} }.
+
+get_app_port() ->
+    {ok, AppPort} = application:get_env(app_port),
+    AppPort.
 
