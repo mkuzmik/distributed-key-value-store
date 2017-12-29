@@ -1,4 +1,5 @@
-/ebin/*.beam
+/ebin
+/_build
 /rebar
 *~
 *.orig
