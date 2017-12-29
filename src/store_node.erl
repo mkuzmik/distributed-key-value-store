@@ -19,12 +19,14 @@ start_link() ->
   gen_server:start_link({global, node()}, ?MODULE, [], []).
 
 put(Key, Value) ->
-  lists:map(fun (TempNode) ->
-    gen_server:call({global, TempNode}, {put, Key, Value}) end, nodes()),
-  gen_server:call({global, node()}, {put, Key, Value}).
+  Node = data_distributor:node_for(Key),
+  logger:info(io_lib:format("Forwarding key: ~w to node: ~w", [Key, Node])),
+  gen_server:call({global, Node}, {put, Key, Value}).
 
 get(Key) ->
-  gen_server:call({global, node()}, {get, Key}).
+  Node = data_distributor:node_for(Key),
+  logger:info(io_lib:format("Forwarding key: ~w to node: ~w", [Key, Node])),
+  gen_server:call({global, Node}, {get, Key}).
 
 init([]) ->
   {ok, #{}}.
