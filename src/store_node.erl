@@ -12,10 +12,10 @@
 -behavior(gen_server).
 
 %% API
--export([start_link/0, init/1, handle_call/3, put/2, get/1]).
+-export([start_link/0, init/1, handle_call/3, put/2, get/1, handle_cast/2]).
 
 start_link() ->
-  io:format("I'm starting ~s~n", [node()]),
+  io:format("Node  ~s starting ~n", [node()]),
   gen_server:start_link({global, node()}, ?MODULE, [], []).
 
 put(Key, Value) ->
@@ -29,7 +29,16 @@ get(Key) ->
 init([]) ->
   {ok, #{}}.
 
-handle_call({put, Key, Value}, From, State) ->
+handle_call({put, Key, Value}, _From, State) ->
   {reply, ok, maps:put(Key, Value, State)};
-handle_call({get, Key}, From, State) ->
-  {reply, maps:get(Key, State), State}.
+handle_call({get, Key}, _From, State) ->
+  {reply, get_if_exists(Key, State), State}.
+
+get_if_exists(Key, Map) ->
+   case maps:is_key(Key, Map) of
+     true -> maps:get(Key, Map);
+     _ -> <<"not_existing_key">>
+   end.
+
+handle_cast(_Request, _State) ->
+  erlang:error(not_implemented).
