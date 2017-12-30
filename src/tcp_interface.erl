@@ -18,7 +18,7 @@ start_server(Port) ->
     spawn(fun() -> acceptor(Listen) end),
     timer:sleep(infinity)
                    end),
-  logger:info(io_lib:format("tcp_interface: Started on port: ~w", [Port])),
+  logger:info("tcp_interface: Started on port: ~w", [Port]),
   {ok, Pid}.
 
 acceptor(ListenSocket) ->

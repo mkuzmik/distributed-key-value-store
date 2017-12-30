@@ -38,7 +38,9 @@ quit
 ```
 
 ## Todo
-- Storing data on specific node (depends on key hash)
+- Nodes synchronization
+- Data replication
+- Saving data on hard drive (Redis?)
 
 ## Problems
 - Updating new node with current data

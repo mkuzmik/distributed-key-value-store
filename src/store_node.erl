@@ -20,23 +20,23 @@ start_link() ->
 
 put(Key, Value) ->
   Node = data_distributor:node_for(Key),
-  logger:info(io_lib:format("router: Forwarding put. key: ~w to node: ~w", [Key, Node])),
+  logger:info("router: Forwarding put. key: ~w to node: ~w", [Key, Node]),
   gen_server:call({global, Node}, {put, Key, Value}).
 
 get(Key) ->
   Node = data_distributor:node_for(Key),
-  logger:info(io_lib:format("router: Forwarding get. key: ~w to node: ~w", [Key, Node])),
+  logger:info("router: Forwarding get. key: ~w to node: ~w", [Key, Node]),
   gen_server:call({global, Node}, {get, Key}).
 
 init([]) ->
   {ok, #{}}.
 
 handle_call({put, Key, Value}, _From, State) ->
-  logger:info(io_lib:format("gen_server: Putting key: ~w value: ~w", [Key, Value])),
+  logger:info("gen_server: Putting key: ~w value: ~w", [Key, Value]),
   {reply, ok, maps:put(Key, Value, State)};
 
 handle_call({get, Key}, _From, State) ->
-  logger:info(io_lib:format("gen_server: Getting key: ~w", [Key])),
+  logger:info("gen_server: Getting key: ~w", [Key]),
   {reply, get_if_exists(Key, State), State}.
 
 get_if_exists(Key, Map) ->
