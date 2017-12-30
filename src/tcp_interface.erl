@@ -38,9 +38,21 @@ handle(Socket) ->
     {tcp, Socket, <<"put ", Content/binary>>} ->
       handle_put(Socket, Content),
       handle(Socket);
+    {tcp, Socket, <<"getall ", Content/binary>>} ->
+      handle_get_all(Socket, Content),
+      handle(Socket);
+    {tcp, Socket, <<"\n">>} ->
+      gen_tcp:send(Socket, <<"\n">>);
     {tcp, Socket, _} ->
       gen_tcp:send(Socket, <<"unknown command \n">>),
       handle(Socket)
+  end.
+
+handle_get_all(Socket, Params) ->
+  case binary:split(Params, <<";">>) of
+    [<<"node">>|_] -> gen_tcp:send(Socket, printer:print_map(store_node:get_all_from_node()));
+    [<<"all">>|_] -> gen_tcp:send(Socket, printer:print_map(store_node:get_all()));
+    _ -> gen_tcp:send(Socket, printer:print_map(store_node:get_all()))
   end.
 
 handle_put(Socket, KeyVal) ->

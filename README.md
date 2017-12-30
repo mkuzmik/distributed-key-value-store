@@ -41,9 +41,11 @@ quit
 - Nodes synchronization
 - Data replication
 - Saving data on hard drive (Redis?)
+- Prettify logging
+- Make commands in tcp_interface more readable (+ add help command)
 
 ## Problems
-- Updating new node with current data
+- Connecting new node to existing cluster
 
 ## Authors
 - Mateusz Kuźmik
