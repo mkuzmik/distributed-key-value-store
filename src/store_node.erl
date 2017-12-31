@@ -48,11 +48,11 @@ init([]) ->
   {ok, #{}}.
 
 handle_call({put, Key, Value}, _From, State) ->
-  logger:info("store_node: Putting key: ~w value: ~w", [Key, Value]),
+  logger:info("store_node: Putting key: ~s value: ~s", [Key, Value]),
   {reply, ok, maps:put(Key, Value, State)};
 
 handle_call({get, Key}, _From, State) ->
-  logger:info("store_node: Getting key: ~w", [Key]),
+  logger:info("store_node: Getting key: ~s", [Key]),
   {reply, get_if_exists(Key, State), State};
 
 handle_call({all_from_node}, _From, State) ->
@@ -62,7 +62,7 @@ handle_call({all_from_node}, _From, State) ->
 get_if_exists(Key, Map) ->
    case maps:is_key(Key, Map) of
      true -> maps:get(Key, Map);
-     _ -> <<"not_existing_key">>
+     _ -> <<"__not_existing_key__">>
    end.
 
 handle_cast(_Request, _State) ->

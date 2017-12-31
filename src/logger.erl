@@ -29,6 +29,3 @@ error(Msg) ->
 
 error(Msg, Params) ->
   error_logger:error_msg(Msg, Params).
-
-print_node() ->
-  io:format("~w : ", [node()]).

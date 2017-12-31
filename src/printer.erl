@@ -16,5 +16,5 @@ print_map(Map) ->
   case maps:size(Map) of
     0 -> <<"Empty\n">>;
     _ -> list_to_binary(maps:fold(fun (Key, Value, Acc) ->
-      io_lib:format(Acc ++ "~w  =>  ~w~n", [Key, Value]) end, "", Map))
+      io_lib:format(Acc ++ "~s  =>  ~s~n", [Key, Value]) end, "", Map))
   end.

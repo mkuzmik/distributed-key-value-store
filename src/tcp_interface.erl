@@ -33,40 +33,57 @@ handle(Socket) ->
   receive
     {tcp, Socket, <<"quit", _/binary>>} ->
       gen_tcp:close(Socket);
-    {tcp, Socket, <<"get ", Content/binary>>} ->
-      handle_get(Socket, Content),
-      handle(Socket);
-    {tcp, Socket, <<"put ", Content/binary>>} ->
-      handle_put(Socket, Content),
-      handle(Socket);
-    {tcp, Socket, <<"getall ", Content/binary>>} ->
+    {tcp, Socket, <<"getall", Content/binary>>} ->
       handle_get_all(Socket, Content),
       handle(Socket);
-    {tcp, Socket, <<"\n">>} ->
-      gen_tcp:send(Socket, <<"\n">>);
+    {tcp, Socket, <<"get", Content/binary>>} ->
+      handle_get(Socket, Content),
+      handle(Socket);
+    {tcp, Socket, <<"put", Content/binary>>} ->
+      handle_put(Socket, Content),
+      handle(Socket);
+    {tcp, Socket, <<"help", Content/binary>>} ->
+      handle_help(Socket, Content),
+      handle(Socket);
     {tcp, Socket, _} ->
-      gen_tcp:send(Socket, <<"unknown command \n">>),
+      gen_tcp:send(Socket, <<"Error: Unknown command\n">>),
       handle(Socket)
   end.
 
-handle_get_all(Socket, Params) ->
-  case binary:split(Params, <<";">>) of
-    [<<"node">>|_] -> gen_tcp:send(Socket, printer:print_map(store_node:get_all_from_node()));
-    [<<"all">>|_] -> gen_tcp:send(Socket, printer:print_map(store_node:get_all()));
+handle_get_all(Socket, Content) ->
+  try command_parser:extract_key(Content) of
+    <<"node">> -> gen_tcp:send(Socket, printer:print_map(store_node:get_all_from_node()));
+    <<"all">> -> gen_tcp:send(Socket, printer:print_map(store_node:get_all()));
     _ -> gen_tcp:send(Socket, printer:print_map(store_node:get_all()))
+  catch
+    _:_ -> gen_tcp:send(Socket, <<"Error: invalid getall command\n">>)
   end.
 
-handle_put(Socket, KeyVal) ->
-  [Key, ValPart] =
-    case binary:split(KeyVal, <<" ">>) of
-      [K,V] -> [K,V];
-      [K] -> [K, <<"">>];
-      _ -> [<<"">>, <<"">>]
-    end,
-  [Val | _] = binary:split(ValPart, <<";">>),
-  store_node:put(Key, Val),
-  gen_tcp:send(Socket, <<"ok\n">>).
+handle_put(Socket, Content) ->
+  try command_parser:extract_key_value(Content) of
+    {Key, Value} ->
+      store_node:put(Key, Value),
+      gen_tcp:send(Socket, <<"ok\n">>)
+  catch
+    _:_ -> gen_tcp:send(Socket, <<"Error: invalid put command\n">>)
+  end.
 
-handle_get(Socket, KeyPart) ->
-  [Key | _] = binary:split(KeyPart, <<";">>),
-  gen_tcp:send(Socket, [store_node:get(Key), <<"\n">>]).
+handle_get(Socket, Content) ->
+  try command_parser:extract_key(Content) of
+    Key -> gen_tcp:send(Socket, [store_node:get(Key), <<"\n">>])
+  catch
+    _:_ -> gen_tcp:send(Socket, <<"Error: invalid get command">>)
+  end.
+
+handle_help(Socket, Content) ->
+  gen_tcp:send(Socket, help()).
+
+help() ->
+  <<"
+  Commands:\n
+  put <key> <value>\n
+  get <key>\n
+  getall node - get all data stored only on current node\n
+  getall - get all data from whole cluster\n
+  quit\n">>.
+

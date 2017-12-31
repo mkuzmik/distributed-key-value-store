@@ -46,22 +46,20 @@ On all nodes execute: `store_app:start(<port>)`. Each node must run on unique po
 ```bash
 telnet localhost <choosen_port>
 ```
-- Use commands:
+- Use command:
 ```bash
-put <key> <value>;
-get <key>;
-quit
+help
 ```
 
 ## Todo
-- Nodes synchronization
-- Data replication
-- Saving data on hard drive (Redis?)
-- Prettify logging
-- Make commands in tcp_interface more readable (+ add help command)
 
-## Problems
+### Main features
 - Connecting new node to existing cluster
+- Saving data on hard drive (Redis?)
+- Data replication
+
+### Minor fixes
+- Make commands in tcp_interface more readable (+ add help command)
 
 ## Authors
 - Mateusz Kuźmik
