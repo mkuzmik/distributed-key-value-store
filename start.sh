@@ -30,7 +30,7 @@ masternode=$counter
 while [ $counter -le $nodes ]
 do
     echo "Starting node $counter@`hostname` with store tcp interface on port $port"
-    erl -noshell -boot start_sasl -pa ebin -sname $counter -s store_app start $port $masternode@`hostname` $detached
+    erl -config config/* -boot start_sasl -pa ebin -sname $counter -s store_app start $port $masternode@`hostname` $detached
     ((counter++))
     ports="$ports $port"
     ((port++))
