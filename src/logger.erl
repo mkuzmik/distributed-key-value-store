@@ -13,31 +13,22 @@
 -export([info/1, info/2, warn/1, warn/2, error/1, error/2]).
 
 info(Msg) ->
-  io:format("INFO : "),
-  print_node(),
-  io:format("~s~n", [Msg]).
+  error_logger:info_msg(Msg).
 
 info(Msg, Params) ->
-  FormatMsg = io_lib:format(Msg, Params),
-  info(FormatMsg).
+  error_logger:info_msg(Msg, Params).
 
 warn(Msg) ->
-  io:format("WARN : "),
-  print_node(),
-  io:format("~s~n", [Msg]).
+  error_logger:warning_msg(Msg).
 
 warn(Msg, Params) ->
-  FormatMsg = io_lib:format(Msg, Params),
-  warn(FormatMsg).
+  error_logger:warning_msg(Msg, Params).
 
 error(Msg) ->
-  io:format("ERROR : "),
-  print_node(),
-  io:format("~s~n", [Msg]).
+  error_logger:error_msg(Msg).
 
 error(Msg, Params) ->
-  FormatMsg = io_lib:format(Msg, Params),
-  logger:error(FormatMsg).
+  error_logger:error_msg(Msg, Params).
 
 print_node() ->
   io:format("~w : ", [node()]).

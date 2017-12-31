@@ -15,10 +15,11 @@
 start_server(Port) ->
   Pid = spawn_link(fun() ->
     {ok, Listen} = gen_tcp:listen(Port, [binary, {active, false}]),
-    spawn(fun() -> acceptor(Listen) end),
+    spawn(fun() ->
+      logger:info("tcp_interface: Started on port: ~w", [Port]),
+      acceptor(Listen) end),
     timer:sleep(infinity)
                    end),
-  logger:info("tcp_interface: Started on port: ~w", [Port]),
   {ok, Pid}.
 
 acceptor(ListenSocket) ->

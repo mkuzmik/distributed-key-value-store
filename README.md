@@ -9,6 +9,22 @@ Implementation of key-value store running on many Erlang nodes. Its main goal is
 
 ## Starting app
 
+### Start app automatically (using bash script)
+
+#### 1. Open terminal and execute start.sh
+
+Execute `start.sh` script in your terminal. In parameters you may describe number of nodes and  TCP port for first node
+(if you specify 3 nodes and port 1000, nodes will get 1000, 1001 and 1002 ports).
+
+Examples:
+
+- `./start.sh`  -> creates one node on port 1234
+- `./start.sh --port 1000`  -> creates one node on port 1000
+- `./start.sh --nodes 2 -port 1000`  -> creates two nodes on port 1000 and 1001
+- `./start.sh -n 2 -p 1000`  -> same as above (shortened parameter names)
+
+### Start app manually (better for debugging cases)
+
 #### 1. Open terminals
 Open at least one terminal (depends on how many nodes you want to have). Go to project root directory.
 
