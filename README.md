@@ -3,6 +3,20 @@
 ## What is it?
 Implementation of key-value store running on many Erlang nodes. Its main goal is 'write-read anywhere' design, which means that you can write data to one node and read it from any node from cluster.
 
+## Demo
+
+Currently, this project is deployed on two AWS EC2 instances (both on port 1234):
+- `ec2-35-177-167-64.eu-west-2.compute.amazonaws.com`
+- `ec2-52-47-155-109.eu-west-3.compute.amazonaws.com`
+
+You can use following commands in your terminal:
+```bash
+telnet ec2-35-177-167-64.eu-west-2.compute.amazonaws.com 1234
+telnet ec2-52-47-155-109.eu-west-3.compute.amazonaws.com 1234
+```
+
+Then type `help` and push Enter!
+
 ## Requirements
 - Erlang OTP
 - Rebar 2
@@ -46,22 +60,30 @@ On all nodes execute: `store_app:start(<port>)`. Each node must run on unique po
 ```bash
 telnet localhost <choosen_port>
 ```
-- Use commands:
+- Use command:
 ```bash
-put <key> <value>;
-get <key>;
-quit
+help
 ```
 
 ## Todo
-- Nodes synchronization
-- Data replication
+
+### Main features
+- Connecting new node to existing cluster
 - Saving data on hard drive (Redis?)
-- Prettify logging
+- Data replication
+
+### Minor fixes
 - Make commands in tcp_interface more readable (+ add help command)
 
-## Problems
-- Connecting new node to existing cluster
+## Docker deployment
+We use docker so as to deploy this project to remote servers.
+
+```bash
+docker build -t store_app_image
+docker save -o images/store_app_image store_app_image
+docker load -i images/store_app_image
+docker run -p 1234:1234 --name store_app store_app_image <this_node> <master_node> 
+```
 
 ## Authors
 - Mateusz Kuźmik

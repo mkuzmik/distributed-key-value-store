@@ -10,6 +10,7 @@
 %% ===================================================================
 
 start() ->
+    io:format("HERE"),
     start(1234).
 
 start(Port) when is_integer(Port) ->
@@ -23,8 +24,13 @@ start([_Port]) ->
 
 start([_Port, MasterNode]) ->
     io:format("Args: ~w ~w~n", [_Port, MasterNode]),
+    true = net_kernel:connect_node(list_to_atom(MasterNode)),
+    start([list_to_atom(_Port)]).
+
+start(_StartType, [MasterNode]) ->
+    io:format("Args: ~w~n", [MasterNode]),
     true = net_kernel:connect_node(MasterNode),
-    start([_Port]).
+    start(_StartType, []);
 
 start(_StartType, _StartArgs) ->
     logger:info("Starting application"),
