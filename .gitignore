@@ -13,3 +13,4 @@ env
 /.idea/
 *.iml
 logs/
+*.dump
