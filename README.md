@@ -1,4 +1,4 @@
-# Distributed Key-Value Store
+# Distributed Key-Value Store ![alt text](https://travis-ci.org/mkuzmik/distributed-key-value-store.svg?branch=master)
 
 ## What is it?
 Implementation of key-value store running on many Erlang nodes. Its main goal is 'write-read anywhere' design, which means that you can write data to one node and read it from any node from cluster.
