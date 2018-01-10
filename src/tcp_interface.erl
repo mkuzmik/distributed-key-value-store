@@ -32,6 +32,7 @@ handle(Socket) ->
   inet:setopts(Socket, [{active, once}]),
   receive
     {tcp, Socket, <<"quit", _/binary>>} ->
+      logger:info("tcp_interface: Lost connection"),
       gen_tcp:close(Socket);
     {tcp, Socket, <<"getall", Content/binary>>} ->
       handle_get_all(Socket, Content),

@@ -20,12 +20,12 @@ start_link() ->
 
 put(Key, Value) ->
   Node = data_distributor:node_for(Key),
-  logger:info("router: Forwarding put. key: ~w to node: ~w", [Key, Node]),
+  logger:info("router: Forwarding put. key: ~s to node: ~w", [Key, Node]),
   gen_server:call({global, Node}, {put, Key, Value}).
 
 get(Key) ->
   Node = data_distributor:node_for(Key),
-  logger:info("router: Forwarding get. key: ~w to node: ~w", [Key, Node]),
+  logger:info("router: Forwarding get. key: ~s to node: ~w", [Key, Node]),
   gen_server:call({global, Node}, {get, Key}).
 
 get_all_from_node(Node) ->

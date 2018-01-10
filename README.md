@@ -83,6 +83,7 @@ docker build -t store_app_image
 docker save -o images/store_app_image store_app_image
 docker load -i images/store_app_image
 docker run -p 1234:1234 --name store_app store_app_image <this_node> <master_node> 
+# when setting up the first node in the cluster then this_node == master_node
 ```
 
 ## Authors

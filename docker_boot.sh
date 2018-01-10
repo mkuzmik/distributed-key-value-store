@@ -6,4 +6,4 @@
 set -x
 set -e
 
-erl -noshell -config config/* -boot start_sasl -pa ebin -name $1 -setcookie abc -kernel inet_dist_listen_min 9000 inet_dist_listen_max 9005 -run store_app start 1234 $2
+erl -noshell -boot start_sasl -pa ebin -name $1 -setcookie abc -kernel inet_dist_listen_min 9000 inet_dist_listen_max 9005 error_logger "{file, \"./$1.log\"}" -run store_app start 1234 $2
