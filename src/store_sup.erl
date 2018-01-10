@@ -28,11 +28,7 @@ init([]) ->
             {store_node, start_link, []},
             permanent, 50000, worker, [store_node]},
         {tcp,
-            {tcp_interface, start_server, [get_app_port()]},
+            {tcp_interface, start_server, [config:get_port()]},
             permanent, 50000, worker, [tcp_interface]}
     ]} }.
-
-get_app_port() ->
-    {ok, AppPort} = application:get_env(app_port),
-    AppPort.
 

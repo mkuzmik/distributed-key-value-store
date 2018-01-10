@@ -23,9 +23,16 @@ start([_Port]) ->
     application:start(store);
 
 start([_Port, MasterNode]) ->
-    io:format("Args: ~w ~w~n", [_Port, MasterNode]),
-    true = net_kernel:connect_node(list_to_atom(MasterNode)),
-    start([list_to_atom(_Port)]).
+    start([_Port, MasterNode, "1"]);
+
+start([_Port, MasterNode, ReplicationFactor]) ->
+    true = connect_to_cluster(MasterNode),
+    config:set_replication_factor(ReplicationFactor),
+    config:set_port(_Port),
+    application:start(store).
+
+connect_to_cluster(MasterNode) ->
+    net_kernel:connect_node(list_to_atom(MasterNode)).
 
 start(_StartType, [MasterNode]) ->
     io:format("Args: ~w~n", [MasterNode]),

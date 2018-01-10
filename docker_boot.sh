@@ -2,6 +2,7 @@
 
 # $1 argument is node name
 # $2 argument is master node name
+# TODO specify replication
 
 set -x
 set -e

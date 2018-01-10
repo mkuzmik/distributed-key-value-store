@@ -19,9 +19,15 @@ start_link() ->
   gen_server:start_link({global, node()}, ?MODULE, [], []).
 
 put(Key, Value) ->
-  Node = data_distributor:node_for(Key),
-  logger:info("router: Forwarding put. key: ~s to node: ~w", [Key, Node]),
-  gen_server:call({global, Node}, {put, Key, Value}).
+  Nodes = data_distributor:nodes_for(Key),
+  logger:info("router: Forwarding put. key: ~s to nodes: ~w", [Key, Nodes]),
+  lists:map(
+    fun(Node) ->
+      put(Node, Key, Value) end,
+    Nodes).
+
+put(Node, Key, Value) ->
+  gen_server:cast({global, Node}, {put, Key, Value}).
 
 get(Key) ->
   Node = data_distributor:node_for(Key),
@@ -47,9 +53,9 @@ get_all() ->
 init([]) ->
   {ok, #{}}.
 
-handle_call({put, Key, Value}, _From, State) ->
+handle_cast({put, Key, Value}, State) ->
   logger:info("store_node: Putting key: ~s value: ~s", [Key, Value]),
-  {reply, ok, maps:put(Key, Value, State)};
+  {noreply, maps:put(Key, Value, State)}.
 
 handle_call({get, Key}, _From, State) ->
   logger:info("store_node: Getting key: ~s", [Key]),
@@ -64,6 +70,3 @@ get_if_exists(Key, Map) ->
      true -> maps:get(Key, Map);
      _ -> <<"__not_existing_key__">>
    end.
-
-handle_cast(_Request, _State) ->
-  erlang:error(not_implemented).

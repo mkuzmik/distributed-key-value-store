@@ -69,7 +69,7 @@ help
 
 ### Main features
 - Connecting new node to existing cluster
-- Saving data on hard drive (Redis?)
+- Persistence
 - Data replication
 
 ### Minor fixes
