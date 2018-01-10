@@ -17,8 +17,11 @@ hash_of(Key) ->
   X.
 
 node_for(Key) ->
-  SortedNodes = lists:sort(lists:concat([nodes(), [node()]])),
-  NodesAmount = length(SortedNodes),
+  NodeTable = node_table(),
+  NodesAmount = length(NodeTable),
   Hash = hash_of(Key),
   NodeNum = Hash rem NodesAmount,
-  lists:nth(NodeNum + 1, SortedNodes).
+  lists:nth(NodeNum + 1, NodeTable).
+
+node_table() ->
+  lists:sort(lists:concat([nodes(), [node()]])).
