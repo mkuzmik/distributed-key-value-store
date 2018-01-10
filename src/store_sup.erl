@@ -26,9 +26,12 @@ init([]) ->
     {ok, { {one_for_one, 5, 10}, [
         {node,
             {store_node, start_link, []},
-            permanent, 50000, worker, [store_node]},
+            permanent, brutal_kill, worker, [store_node]},
+        {health_control,
+            {health_control, start_link, []},
+            permanent, brutal_kill, worker, [store_node]},
         {tcp,
             {tcp_interface, start_server, [config:get_port()]},
-            permanent, 50000, worker, [tcp_interface]}
+            permanent, brutal_kill, worker, [tcp_interface]}
     ]} }.
 

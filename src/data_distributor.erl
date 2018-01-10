@@ -10,7 +10,7 @@
 -author("mkuzmik").
 
 %% API
--export([node_for/1, nodes_for/1]).
+-export([node_for/1, nodes_for/1, node_table/0]).
 
 hash_of(Key) ->
   [X|_] = binary_to_list(crypto:hash(md4, Key)),

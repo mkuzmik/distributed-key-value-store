@@ -75,9 +75,7 @@ Hints:
 ### Main features
 - Connecting new node to existing cluster
 - Persistence
-
-### Minor fixes
-- Make commands in tcp_interface more readable (+ add help command)
+- Delete
 
 ## Docker deployment
 We use docker so as to deploy this project to remote servers.
