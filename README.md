@@ -36,6 +36,7 @@ Examples:
 - `./start.sh --port 1000`  -> creates one node on port 1000
 - `./start.sh --nodes 2 -port 1000`  -> creates two nodes on port 1000 and 1001
 - `./start.sh -n 2 -p 1000`  -> same as above (shortened parameter names)
+- `./start.sh -n 5 -replication 2`  -> five nodes with replication-factor as two (each key-value pair is stored on two nodes)
 
 ### Start app manually (better for debugging cases)
 
@@ -65,12 +66,15 @@ telnet localhost <choosen_port>
 help
 ```
 
+Hints:
+- Logs for each node are stored in `logs/`
+
+
 ## Todo
 
 ### Main features
 - Connecting new node to existing cluster
 - Persistence
-- Data replication
 
 ### Minor fixes
 - Make commands in tcp_interface more readable (+ add help command)
