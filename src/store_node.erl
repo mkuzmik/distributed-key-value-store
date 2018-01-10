@@ -19,8 +19,14 @@ start_link() ->
   gen_server:start_link({global, node()}, ?MODULE, [], []).
 
 put(Key, Value) ->
-  Node = data_distributor:node_for(Key),
-  logger:info("router: Forwarding put. key: ~s to node: ~w", [Key, Node]),
+  Nodes = data_distributor:nodes_for(Key),
+  logger:info("router: Forwarding put. key: ~s to nodes: ~w", [Key, Nodes]),
+  lists:map(
+    fun(Node) ->
+      put(Node, Key, Value) end,
+    Nodes).
+
+put(Node, Key, Value) ->
   gen_server:cast({global, Node}, {put, Key, Value}).
 
 get(Key) ->

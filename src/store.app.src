@@ -2,6 +2,16 @@
  [
   {description, ""},
   {vsn, "1"},
+  {modules, [
+    command_parser,
+    config,
+    data_distributor,
+    logger,
+    printer,
+    store_node,
+    tcp_interface,
+    util
+    ]},
   {registered, []},
   {applications, [
                   kernel,

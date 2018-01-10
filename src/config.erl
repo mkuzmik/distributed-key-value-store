@@ -19,8 +19,7 @@ set_replication_factor(RepFac) when is_integer(RepFac) ->
   application:set_env(store, replication_factor, RepFac).
 
 get_replication_factor() ->
-  {ok, RepFac} = application:get_env(store, replication_factor),
-  RepFac.
+  get_env_or_else(1, replication_factor).
 
 set_port(Port) when is_list(Port) ->
   set_port(list_to_integer(Port));
@@ -29,5 +28,10 @@ set_port(Port) when is_integer(Port) ->
   application:set_env(store, app_port, Port).
 
 get_port() ->
-  {ok, Port} = application:get_env(store, app_port),
-  Port.
+  get_env_or_else(1234, app_port).
+
+get_env_or_else(Default, Env) ->
+  case application:get_env(store, Env) of
+    {ok, Value} -> Value;
+    _ -> Default
+  end.
