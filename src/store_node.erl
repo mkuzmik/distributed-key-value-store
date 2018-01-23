@@ -12,7 +12,7 @@
 -behavior(gen_server).
 
 %% API
--export([get_all_from_node/0, get_all_from_node/1, get_all/0, start_link/0, init/1, handle_call/3, put/2, get/1, handle_cast/2]).
+-export([delete/2, get_all_from_node/0, get_all_from_node/1, get_all/0, start_link/0, init/1, handle_call/3, put/2, get/1, handle_cast/2]).
 
 start_link() ->
   logger:info("store_node: Starting"),
@@ -28,6 +28,9 @@ put(Key, Value) ->
 
 put(Node, Key, Value) ->
   gen_server:cast({global, Node}, {put, Key, Value}).
+
+delete(Node, Key) ->
+  gen_server:cast({globa, Node}, {delete, Key}).
 
 get(Key) ->
   Node = data_distributor:node_for(Key),
@@ -55,7 +58,11 @@ init([]) ->
 
 handle_cast({put, Key, Value}, State) ->
   logger:info("store_node: Putting key: ~s value: ~s", [Key, Value]),
-  {noreply, maps:put(Key, Value, State)}.
+  {noreply, maps:put(Key, Value, State)};
+
+handle_cast({delete, Key}, State) ->
+  logger:info("store node: Deleting key: ~s", [Key]),
+  {noreply, maps:remove(Key, State)}.
 
 handle_call({get, Key}, _From, State) ->
   logger:info("store_node: Getting key: ~s", [Key]),
