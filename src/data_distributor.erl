@@ -20,12 +20,7 @@ hash_of(Node) when is_atom(Node) ->
   hash_of(atom_to_binary(Node, utf8)).
 
 nodes_for(Key) ->
-  NodeTable = node_table(),
-  NodesAmount = length(NodeTable),
-  Hash = hash_of(Key),
-  NodeNum = Hash rem NodesAmount + 1,
-  ReplicationFactor = config:get_replication_factor(),
-  util:nths(NodeNum, ReplicationFactor, node_table()).
+  nodes_for(Key, node_table()).
 
 node_for(Key) ->
   util:random_element(nodes_for(Key)).

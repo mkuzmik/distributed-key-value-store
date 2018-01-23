@@ -27,9 +27,9 @@ init([]) ->
         {node,
             {store_node, start_link, []},
             permanent, brutal_kill, worker, [store_node]},
-        {health_control,
-            {health_control, start_link, []},
-            permanent, brutal_kill, worker, [store_node]},
+%%        {health_control,
+%%            {health_control, start_link, []},
+%%            permanent, brutal_kill, worker, [health_control]},
         {tcp,
             {tcp_interface, start_server, [config:get_port()]},
             permanent, brutal_kill, worker, [tcp_interface]}

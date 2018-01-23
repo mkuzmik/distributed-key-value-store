@@ -17,11 +17,14 @@ start_link() ->
   gen_server:start_link({global, node()}, ?MODULE, [], []).
 
 init([]) ->
+  logger:info("health control: Initialization."),
+  lists:map(fun(Node) ->
+    gen_server:call({global, Node}, {synchronize}) end, nodes()),
   {ok, data_distributor:node_table()}.
 
-
-handle_call(Request, From, State) ->
-  erlang:error(not_implemented).
+handle_call({synchronize}, _From, State) ->
+  logger:info("health control: synchronization started"),
+  {noreply, State}.
 
 handle_cast(Request, State) ->
   erlang:error(not_implemented).
