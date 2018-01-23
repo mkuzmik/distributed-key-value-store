@@ -1,13 +1,4 @@
-%%%-------------------------------------------------------------------
-%%% @author mkuzmik
-%%% @copyright (C) 2017, <COMPANY>
-%%% @doc
-%%%
-%%% @end
-%%% Created : 29. Dec 2017 13:16
-%%%-------------------------------------------------------------------
 -module(logger).
--author("mkuzmik").
 
 %% API
 -export([info/1, info/2, warn/1, warn/2, error/1, error/2]).

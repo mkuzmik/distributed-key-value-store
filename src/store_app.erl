@@ -10,7 +10,6 @@
 %% ===================================================================
 
 start() ->
-    io:format("HERE"),
     start(1234).
 
 start(Port) when is_integer(Port) ->

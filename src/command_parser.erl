@@ -1,13 +1,4 @@
-%%%-------------------------------------------------------------------
-%%% @author mkuzmik
-%%% @copyright (C) 2017, <COMPANY>
-%%% @doc
-%%%
-%%% @end
-%%% Created : 31. Dec 2017 13:34
-%%%-------------------------------------------------------------------
 -module(command_parser).
--author("mkuzmik").
 
 %% API
 -export([extract_key/1, extract_key_value/1]).

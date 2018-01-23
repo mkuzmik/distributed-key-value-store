@@ -1,13 +1,5 @@
-%%%-------------------------------------------------------------------
-%%% @author mkuzmik
-%%% @copyright (C) 2017, <COMPANY>
-%%% @doc
-%%%
-%%% @end
-%%% Created : 29. Dec 2017 13:59
-%%%-------------------------------------------------------------------
 -module(data_distributor).
--author("mkuzmik").
+
 
 %% API
 -export([node_for/1, nodes_for/1, node_table/0, nodes_for/2, sorted_hash_node_list/1, pos_of/2]).
